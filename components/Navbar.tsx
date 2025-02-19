@@ -12,10 +12,8 @@ import {
 
 const navItems = [
   { href: "/", icon: Play, label: "Attempt" },
-  { href: "/manage", icon: LayoutDashboard, label: "Manage" },
-  { href: "/history", icon: History, label: "History" },
   { href: "/resume", icon: FileText, label: "Resume" },
-  { href: "/profile", icon: User, label: "Profile" },
+  { href: "/history", icon: History, label: "History" },
 ];
 
 export default function FloatingNavbar() {
