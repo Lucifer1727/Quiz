@@ -27,7 +27,10 @@ export default function History() {
         const request = objectStore.getAll();
 
         request.onsuccess = (event) => {
-          setAttempts(event.target.result);
+          const requestResult = (event.target as IDBRequest)?.result;
+          if (requestResult) {
+            setAttempts(requestResult);
+          }
         };
       }
     };
