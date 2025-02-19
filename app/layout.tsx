@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import FloatingNavbar from "@/components/Navbar";
+import FloatingNavbar from "@/components/Navbar"; 
+import Header from "@/components/header";
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,8 +17,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans antialiased`}>
+        <SessionProvider>
+        <Header/>
         {children}
         <FloatingNavbar></FloatingNavbar>
+        </SessionProvider>
       </body>
     </html>
   );

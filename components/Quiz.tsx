@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import AuthGuard from "./signin-Dialog";
 import {
   Card,
   CardContent,
@@ -14,6 +15,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import quizData from "@/data/quizData";
+
+// Import the server action (if supported in your setup)
+import { saveScore } from "@/lib/queries";
 
 const SECONDS_PER_QUESTION = 30;
 
@@ -41,6 +45,7 @@ export default function Quiz() {
     return () => clearInterval(timer);
   }, []); // Removed unnecessary dependency: currentQuestionIndex
 
+  // This function still saves the attempt to IndexedDB if needed.
   const saveAttemptToIndexedDB = async (score: number) => {
     if ("indexedDB" in window) {
       const db = await openDatabase();
@@ -83,7 +88,8 @@ export default function Quiz() {
     setShowFeedback(true);
   };
 
-  const handleNextQuestion = () => {
+  // Marking the function async to call the server action
+  const handleNextQuestion = async () => {
     if (currentQuestionIndex < quizData.length - 1) {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
       setSelectedAnswer("");
@@ -91,7 +97,14 @@ export default function Quiz() {
       setTimeLeft(SECONDS_PER_QUESTION);
     } else {
       setQuizCompleted(true);
+      // Save locally
       saveAttemptToIndexedDB(score);
+      // Save in database via server action
+      try {
+        await saveScore(score);
+      } catch (error) {
+        console.error("Error saving score:", error);
+      }
     }
   };
 
@@ -144,6 +157,7 @@ export default function Quiz() {
   const currentQuestion = quizData[currentQuestionIndex];
 
   return (
+    <AuthGuard>
     <Card className="w-full max-w-2xl mx-auto bg-blue-50 shadow-lg rounded-lg">
       <CardHeader className="bg-blue-100 p-4 rounded-t-lg">
         <CardTitle className="text-blue-800 text-3xl font-semibold">
@@ -204,5 +218,6 @@ export default function Quiz() {
         )}
       </CardFooter>
     </Card>
+    </AuthGuard>
   );
 }
