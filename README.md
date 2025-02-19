@@ -8,7 +8,6 @@ Unlike traditional blogs, Quiz Platform provides interactive quizzes instead of 
 
 Thanks to Next.js, we ensure a smooth and fast user experience, while using Lucide-react and Radix UI for a sleek and accessible design.
 
-
 ## Table of Contents
 - Quiz Platform
 - About
@@ -29,14 +28,20 @@ Thanks to Next.js, we ensure a smooth and fast user experience, while using Luci
 - User-friendly and visually appealing UI
 - Mobile-friendly design
 - Lightweight and fast performance
+- **Local storage support** to reduce database calls
+- **Middleware for access control** to enhance security and restrict unauthorized access
+- **NextAuth with Google Sign-in** for seamless authentication
+- **Prisma ORM** for efficient database management
 
 ## Tech Stack
 - **Frontend:** Next.js, React, Radix UI, Lucide-react
 - **Backend:** Express, Node.js
+- **Authentication:** NextAuth (Google Sign-in)
+- **Database:** Prisma ORM
 - **Deployment:** Vercel
 
 ## Getting Started
-
+Vercel Deployment: https://quiz-phi-brown.vercel.app/
 ### Prerequisites
 Ensure you have the following installed on your system:
 - Node.js (>= 18.x)
@@ -79,4 +84,3 @@ We appreciate all contributions that help improve the platform!
 
 ---
 Happy Learning! 🚀
-
