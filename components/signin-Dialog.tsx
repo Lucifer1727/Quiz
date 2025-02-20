@@ -38,7 +38,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
             {/* Add your quiz logo or illustration here */}
             <div className="relative w-32 h-32 mb-4">
               <Image
-                src="/quiz-logo.png" // Change this to your quiz logo image path
+                src="/puzzle.png" // Change this to your quiz logo image path
                 alt="Quiz Master Logo"
                 fill
                 className="object-contain"
@@ -58,7 +58,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
             <Button
               className="w-full bg-primary hover:bg-primary/90"
-              onClick={() => signIn('google')}
+              onClick={() => signIn("google")}
             >
               Sign in with Google
             </Button>

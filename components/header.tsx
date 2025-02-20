@@ -1,16 +1,16 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import { User, LogOut } from 'lucide-react';
-import Link from 'next/link';
-import { useSession, signOut, signIn } from 'next-auth/react';
+import React, { useState, useEffect } from "react";
+import { User, LogOut } from "lucide-react";
+import Link from "next/link";
+import { useSession, signOut, signIn } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 export default function Header() {
   const { data: session } = useSession();
@@ -26,8 +26,8 @@ export default function Header() {
       setPrevScrollPos(currentScrollPos);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [prevScrollPos]);
 
   // Custom sign-out handler that clears the IndexedDB before signing out
@@ -56,7 +56,7 @@ export default function Header() {
   return (
     <header
       className={`fixed w-full bg-background border-b border-border z-50 transition-transform duration-300 ${
-        visible ? 'translate-y-0' : '-translate-y-full'
+        visible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
       <div className="container mx-auto px-4 h-12 flex items-center justify-between">
@@ -65,9 +65,7 @@ export default function Header() {
           href="/"
           className="flex-shrink-0 flex items-center hover:opacity-80 transition-opacity"
         >
-          <h1 className="text-base font-bold text-white">
-            Quiz by Jayesh
-          </h1>
+          <h1 className="text-base font-bold text-white">Quiz by Jayesh</h1>
         </Link>
 
         {/* Right Section */}
@@ -76,24 +74,27 @@ export default function Header() {
           {session ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-6 w-6 rounded-full">
+                <Button
+                  variant="ghost"
+                  className="relative h-6 w-6 rounded-full"
+                >
                   <Avatar className="h-6 w-6">
-                    <AvatarImage src={session.user?.image || ''} alt={session.user?.name || ''} />
+                    <AvatarImage
+                      src={session.user?.image || ""}
+                      alt={session.user?.name || ""}
+                    />
                     <AvatarFallback>
-                      {session.user?.name?.[0] || 'U'}
+                      {session.user?.name?.[0] || "U"}
                     </AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 bg-gray-700 text-white">
-                <DropdownMenuItem asChild>
-                  <Link href="/profile" className="flex items-center">
-                    <User className="mr-2 h-4 w-4" />
-                    <span>Profile</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={customSignOut} 
+              <DropdownMenuContent
+                align="end"
+                className="w-56 bg-gray-700 text-white"
+              >
+                <DropdownMenuItem
+                  onClick={customSignOut}
                   className="hover:bg-gray-600"
                 >
                   <LogOut className="mr-2 h-4 w-4" />
@@ -102,8 +103,8 @@ export default function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button 
-              onClick={() => signIn('google')}
+            <Button
+              onClick={() => signIn("google")}
               className="bg-gray-700 hover:bg-gray-600 text-white rounded-full px-4 py-1 text-sm"
             >
               Sign In
