@@ -11,8 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import quizData from "@/data/quizData";
 
@@ -48,7 +46,7 @@ export default function Quiz() {
   // This function still saves the attempt to IndexedDB if needed.
   const saveAttemptToIndexedDB = async (score: number) => {
     if ("indexedDB" in window) {
-      const db = await openDatabase();
+      const db: any = await openDatabase();
       const transaction = db.transaction(["attempts"], "readwrite");
       const objectStore = transaction.objectStore("attempts");
       const attempt = {
@@ -60,7 +58,7 @@ export default function Quiz() {
     }
   };
 
-  const openDatabase = (): Promise<IDBDatabase> => {
+  const openDatabase = () => {
     return new Promise((resolve, reject) => {
       const request = indexedDB.open("QuizDatabase", 1);
 
@@ -69,13 +67,13 @@ export default function Quiz() {
       request.onsuccess = () => resolve(request.result);
 
       request.onupgradeneeded = (event) => {
-        const db = (event.target as IDBOpenDBRequest).result;
+        const db = (event.target as any).result;
         db.createObjectStore("attempts", { keyPath: "date" });
       };
     });
   };
 
-  const handleAnswer = (answer: string) => {
+  const handleAnswer = (answer: any) => {
     setSelectedAnswer(answer);
   };
 
@@ -88,7 +86,6 @@ export default function Quiz() {
     setShowFeedback(true);
   };
 
-  // Marking the function async to call the server action
   const handleNextQuestion = async () => {
     if (currentQuestionIndex < quizData.length - 1) {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
@@ -119,13 +116,13 @@ export default function Quiz() {
 
   if (quizCompleted) {
     return (
-      <Card className="w-full max-w-2xl mx-auto bg-blue-50 shadow-lg rounded-lg">
-        <CardHeader className="bg-blue-100 p-4 rounded-t-lg">
-          <CardTitle className="text-blue-800 text-3xl font-semibold">
+      <Card className="w-full max-w-4xl mx-auto bg-blue-50 shadow-lg rounded-lg">
+        <CardHeader className="bg-blue-100 p-6 rounded-t-lg">
+          <CardTitle className="text-blue-800 text-3xl font-semibold font-montserrat">
             Quiz Completed!
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-6">
+        <CardContent className="p-8 font-inter">
           <p className="text-2xl font-bold mb-4 text-blue-700">
             Your Score: {score} / {quizData.length}
           </p>
@@ -135,7 +132,7 @@ export default function Quiz() {
             style={{ borderRadius: "8px" }}
           />
         </CardContent>
-        <CardFooter className="bg-blue-100 p-4 rounded-b-lg flex justify-end">
+        <CardFooter className="bg-blue-100 p-6 rounded-b-lg flex justify-end">
           <Button
             onClick={restartQuiz}
             className="mr-2 bg-blue-500 text-white hover:bg-blue-600"
@@ -157,10 +154,10 @@ export default function Quiz() {
   const currentQuestion = quizData[currentQuestionIndex];
 
   return (
-    <AuthGuard>
-    <Card className="w-full max-w-2xl mx-auto bg-blue-50 shadow-lg rounded-lg">
-      <CardHeader className="bg-blue-100 p-4 rounded-t-lg">
-        <CardTitle className="text-blue-800 text-3xl font-semibold">
+    // <AuthGuard>
+    <Card className="w-full max-w-4xl mx-auto bg-blue-50 shadow-lg rounded-lg">
+      <CardHeader className="bg-blue-100 p-6 rounded-t-lg">
+        <CardTitle className="text-blue-800 text-3xl font-semibold font-montserrat">
           Question {currentQuestionIndex + 1} of {quizData.length}
         </CardTitle>
         <Progress
@@ -168,25 +165,45 @@ export default function Quiz() {
           className="w-full h-4 bg-blue-200"
           style={{ borderRadius: "8px" }}
         />
-        <p className="text-blue-700 mt-2">Time left: {timeLeft} seconds</p>
-      </CardHeader>
-      <CardContent className="p-6">
-        <p className="text-lg mb-4 text-blue-700">
-          {currentQuestion.question}
+        <p className="text-blue-700 mt-2 font-inter">
+          Time left: {timeLeft} seconds
         </p>
-        <RadioGroup value={selectedAnswer} onValueChange={handleAnswer}>
-          {currentQuestion.answers.map((answer, index) => (
-            <div key={index} className="flex items-center space-x-2 mb-2">
-              <RadioGroupItem value={answer} id={`answer-${index}`} />
-              <Label htmlFor={`answer-${index}`} className="text-blue-700">
-                {answer}
-              </Label>
-            </div>
-          ))}
-        </RadioGroup>
+      </CardHeader>
+      <CardContent className="p-8 font-inter">
+        <p className="text-lg mb-6 text-blue-700">{currentQuestion.question}</p>
+        <div className="space-y-3">
+          {currentQuestion.answers.map((answer, index) => {
+            // Determine background based on feedback and selection
+            const isSelected = selectedAnswer === answer;
+            let optionBg = "bg-white";
+            if (showFeedback && isSelected) {
+              optionBg =
+                answer === currentQuestion.correctAnswer
+                  ? "bg-green-200"
+                  : "bg-red-200";
+            }
+            return (
+              <div
+                key={index}
+                onClick={() => handleAnswer(answer)}
+                className={`flex items-center space-x-3 p-4 rounded-md cursor-pointer border border-gray-300 hover:bg-blue-50 ${optionBg}`}
+              >
+                {/* The radio element is kept for accessibility */}
+                <input
+                  type="radio"
+                  name="answer"
+                  checked={isSelected}
+                  readOnly
+                  className="form-radio text-blue-500"
+                />
+                <label className="cursor-pointer text-blue-700">{answer}</label>
+              </div>
+            );
+          })}
+        </div>
         {showFeedback && (
           <p
-            className={`mt-4 ${
+            className={`mt-6 font-inter text-xl ${
               selectedAnswer === currentQuestion.correctAnswer
                 ? "text-green-600"
                 : "text-red-600"
@@ -199,7 +216,7 @@ export default function Quiz() {
           </p>
         )}
       </CardContent>
-      <CardFooter className="bg-blue-100 p-4 rounded-b-lg flex justify-end">
+      <CardFooter className="bg-blue-100 p-6 rounded-b-lg flex justify-end">
         {!showFeedback ? (
           <Button
             onClick={handleSubmit}
@@ -218,6 +235,5 @@ export default function Quiz() {
         )}
       </CardFooter>
     </Card>
-    </AuthGuard>
   );
 }

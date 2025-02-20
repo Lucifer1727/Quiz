@@ -1,19 +1,18 @@
-// app/actions/saveScore.ts
-'use server';
+"use server";
 
-import { prisma } from '../prisma'; // adjust path to your Prisma client instance
-import { auth } from '../auth';
+import { prisma } from "../prisma"; // adjust path to your Prisma client instance
+import { auth } from "../auth";
 
 export async function saveScore(score: number) {
   const session = await auth();
-  if (!session?.user?.id) {
+  if (!session?.user?.email) {
     throw new Error("Unauthorized");
   }
 
   // Create a new score entry in the database
   const savedScore = await prisma.score.create({
     data: {
-    userId: session.user.id as string,
+      userId: session?.user?.email as string,
       score,
     },
   });
@@ -21,19 +20,18 @@ export async function saveScore(score: number) {
   return savedScore;
 }
 
-
-
 export async function fetchScoresFromDB() {
   const session = await auth();
-  if(!session?.user?.id) {
+  console.log(session);
+  if (!session?.user?.email) {
     throw new Error("Unauthorized");
   }
-  
+
   const scores = await prisma.score.findMany({
     where: {
-      userId: session.user.id
+      userId: session?.user?.email as string,
     },
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
   });
-  return scores;
+  return { success: true, data: scores };
 }

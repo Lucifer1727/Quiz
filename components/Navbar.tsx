@@ -11,9 +11,9 @@ import {
 } from "@/components/ui/tooltip";
 
 const navItems = [
-  { href: "/", icon: Play, label: "Attempt" },
+  { href: "/", icon: History, label: "History" },
   { href: "/resume", icon: FileText, label: "Resume" },
-  { href: "/history", icon: History, label: "History" },
+  { href: "/quiz", icon: Play, label: "Attempt" },
 ];
 
 export default function FloatingNavbar() {

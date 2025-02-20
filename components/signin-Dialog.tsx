@@ -26,10 +26,10 @@ export default function AuthGuard({ children }: AuthGuardProps) {
       <Dialog open={true}>
         <DialogContent className="sm:max-w-[425px] bg-background text-foreground">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-center">
+            <DialogTitle className="text-2xl font-bold text-center text-blue-600">
               Welcome to Quiz Master
             </DialogTitle>
-            <DialogDescription className="text-center">
+            <DialogDescription className="text-center ">
               Test your knowledge with exciting quizzes!
             </DialogDescription>
           </DialogHeader>
@@ -47,8 +47,8 @@ export default function AuthGuard({ children }: AuthGuardProps) {
             </div>
 
             <div className="space-y-4 text-center">
-              <h3 className="font-semibold text-lg">Features</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <h3 className="font-semibold text-lg text-blue-600">Features</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground ">
                 <li>🧠 Challenge yourself with diverse topics</li>
                 <li>⏱️ Beat the clock in timed quizzes</li>
                 <li>🏆 Track your progress and scores</li>
@@ -57,7 +57,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
             </div>
 
             <Button
-              className="w-full bg-primary hover:bg-primary/90"
+              className="w-full bg-primary hover:bg-primary/90 bg-blue-600 font-extrabold text-white border-none"
               onClick={() => signIn("google")}
             >
               Sign in with Google

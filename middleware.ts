@@ -30,13 +30,13 @@ export default auth((req) => {
 
   if (isAuthRoute) {
     if (!isLoggedIn) {
-      return Response.redirect(new URL("/auth", nextUrl));
+      return Response.redirect(new URL("/", nextUrl));
     }
     return;
   }
 
   // Redirect to login if not logged in and not a public or auth route
-  return Response.redirect(new URL("/auth", nextUrl));
+  return Response.redirect(new URL("/", nextUrl));
 });
 
 export const config = {
